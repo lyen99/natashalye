@@ -1,0 +1,849 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Natasha Lye — Product Portfolio</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #0a0a0f;
+            --bg-secondary: #111118;
+            --bg-card: #16161f;
+            --bg-card-hover: #1c1c28;
+            --accent: #00d4aa;
+            --accent-dim: #00d4aa22;
+            --accent-mid: #00d4aa55;
+            --text-primary: #e8e8ed;
+            --text-secondary: #8888a0;
+            --text-muted: #55556a;
+            --border: #222233;
+            --gradient-1: linear-gradient(135deg, #00d4aa, #007cf0);
+            --gradient-2: linear-gradient(135deg, #007cf0, #9b59b6);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html {
+            scroll-behavior: smooth;
+            scrollbar-width: thin;
+            scrollbar-color: var(--accent-dim) var(--bg-primary);
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.7;
+            overflow-x: hidden;
+        }
+
+        .grid-bg {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background-image:
+                linear-gradient(var(--border) 1px, transparent 1px),
+                linear-gradient(90deg, var(--border) 1px, transparent 1px);
+            background-size: 60px 60px;
+            opacity: 0.15;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .glow-orb {
+            position: fixed;
+            width: 600px; height: 600px;
+            border-radius: 50%;
+            filter: blur(120px);
+            opacity: 0.08;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .glow-orb-1 { top: -200px; right: -100px; background: #00d4aa; }
+        .glow-orb-2 { bottom: -200px; left: -100px; background: #007cf0; }
+
+        nav {
+            position: fixed; top: 0; left: 0; right: 0;
+            z-index: 100;
+            padding: 1.2rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(10, 10, 15, 0.8);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .nav-logo {
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 600;
+            font-size: 1rem;
+            color: var(--accent);
+            letter-spacing: -0.02em;
+        }
+
+        .nav-links { display: flex; gap: 2rem; }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            font-weight: 500;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover { color: var(--accent); }
+
+        .hero {
+            position: relative;
+            z-index: 1;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            padding: 8rem 2rem 4rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .hero-content { max-width: 800px; }
+
+        .hero-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--accent);
+            background: var(--accent-dim);
+            border: 1px solid var(--accent-mid);
+            padding: 0.4rem 1rem;
+            border-radius: 100px;
+            margin-bottom: 2rem;
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        .hero-tag .dot {
+            width: 6px; height: 6px;
+            border-radius: 50%;
+            background: var(--accent);
+            animation: pulse 2s infinite;
+        }
+
+        .hero h1 {
+            font-size: clamp(2.8rem, 6vw, 5rem);
+            font-weight: 800;
+            line-height: 1.05;
+            letter-spacing: -0.03em;
+            margin-bottom: 1.5rem;
+            animation: fadeInUp 0.8s ease-out 0.1s both;
+        }
+
+        .hero h1 .gradient-text {
+            background: var(--gradient-1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-description {
+            font-size: 1.15rem;
+            color: var(--text-secondary);
+            max-width: 580px;
+            line-height: 1.8;
+            margin-bottom: 2.5rem;
+            animation: fadeInUp 0.8s ease-out 0.2s both;
+        }
+
+        .hero-ctas {
+            display: flex; gap: 1rem;
+            flex-wrap: wrap;
+            animation: fadeInUp 0.8s ease-out 0.3s both;
+        }
+
+        .btn-primary {
+            display: inline-flex;
+            align-items: center; gap: 0.5rem;
+            padding: 0.85rem 2rem;
+            background: var(--accent);
+            color: var(--bg-primary);
+            font-family: 'Outfit', sans-serif;
+            font-weight: 600;
+            font-size: 0.9rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px var(--accent-mid);
+        }
+
+        .btn-secondary {
+            display: inline-flex;
+            align-items: center; gap: 0.5rem;
+            padding: 0.85rem 2rem;
+            background: transparent;
+            color: var(--text-primary);
+            font-family: 'Outfit', sans-serif;
+            font-weight: 500;
+            font-size: 0.9rem;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        section {
+            position: relative;
+            z-index: 1;
+            padding: 6rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.7rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 0.75rem;
+        }
+
+        .section-title {
+            font-size: clamp(1.8rem, 4vw, 2.8rem);
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            margin-bottom: 1rem;
+        }
+
+        .section-subtitle {
+            color: var(--text-secondary);
+            font-size: 1.05rem;
+            max-width: 600px;
+            margin-bottom: 3rem;
+        }
+
+        .metrics-bar {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1px;
+            background: var(--border);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            overflow: hidden;
+            margin-bottom: 4rem;
+        }
+
+        .metric {
+            background: var(--bg-secondary);
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .metric-value {
+            font-size: 2.2rem;
+            font-weight: 800;
+            background: var(--gradient-1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .metric-label {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            margin-top: 0.25rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .case-studies-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .case-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            overflow: hidden;
+            transition: all 0.4s;
+            cursor: pointer;
+        }
+
+        .case-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--accent-mid);
+            box-shadow: 0 20px 60px rgba(0, 212, 170, 0.06);
+        }
+
+        .case-card-image {
+            width: 100%;
+            height: 200px;
+            background: var(--bg-secondary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .case-card-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .case-card-image .placeholder-icon {
+            font-size: 3rem;
+            opacity: 0.3;
+        }
+
+        .case-card-body { padding: 1.5rem; }
+
+        .case-card-tags {
+            display: flex; gap: 0.5rem;
+            flex-wrap: wrap;
+            margin-bottom: 0.75rem;
+        }
+
+        .tag {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.65rem;
+            padding: 0.25rem 0.6rem;
+            border-radius: 4px;
+            background: var(--accent-dim);
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .tag.blue { background: rgba(0, 124, 240, 0.15); color: #60a5fa; }
+        .tag.purple { background: rgba(155, 89, 182, 0.15); color: #c084fc; }
+
+        .case-card h3 {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            letter-spacing: -0.01em;
+        }
+
+        .case-card p {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        .case-card-result {
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+            color: var(--accent);
+        }
+
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .skill-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 2rem;
+            transition: all 0.3s;
+        }
+
+        .skill-card:hover { border-color: var(--accent-mid); }
+
+        .skill-icon {
+            width: 48px; height: 48px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.4rem;
+            margin-bottom: 1rem;
+        }
+
+        .skill-icon.green { background: rgba(0, 212, 170, 0.12); }
+        .skill-icon.blue { background: rgba(0, 124, 240, 0.12); }
+        .skill-icon.purple { background: rgba(155, 89, 182, 0.12); }
+
+        .skill-card h3 { font-size: 1rem; font-weight: 600; margin-bottom: 0.5rem; }
+        .skill-card p { font-size: 0.85rem; color: var(--text-secondary); line-height: 1.6; }
+
+        .timeline { position: relative; padding-left: 2rem; }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 0; top: 0; bottom: 0;
+            width: 2px;
+            background: linear-gradient(to bottom, var(--accent), var(--accent-mid), transparent);
+        }
+
+        .timeline-item { position: relative; padding-bottom: 3rem; }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -2rem; top: 0.5rem;
+            width: 10px; height: 10px;
+            border-radius: 50%;
+            background: var(--accent);
+            border: 3px solid var(--bg-primary);
+            transform: translateX(-4px);
+        }
+
+        .timeline-date {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--accent);
+            margin-bottom: 0.25rem;
+        }
+
+        .timeline-item h3 { font-size: 1.15rem; font-weight: 600; margin-bottom: 0.15rem; }
+
+        .timeline-company {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.75rem;
+        }
+
+        .timeline-item p {
+            font-size: 0.88rem;
+            color: var(--text-secondary);
+            line-height: 1.7;
+            max-width: 600px;
+        }
+
+        .contact-section { text-align: center; padding: 6rem 2rem 8rem; }
+
+        .contact-links {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-top: 2rem;
+        }
+
+        .contact-link {
+            display: inline-flex;
+            align-items: center; gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text-primary);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+        }
+
+        .contact-link:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+            transform: translateY(-2px);
+        }
+
+        footer {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            padding: 2rem;
+            border-top: 1px solid var(--border);
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        .section-divider {
+            border: none;
+            height: 1px;
+            background: var(--border);
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(24px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.4; }
+        }
+
+        @media (max-width: 768px) {
+            nav { padding: 1rem; }
+            .nav-links { gap: 1rem; }
+            .nav-links a { font-size: 0.75rem; }
+            .hero { padding: 7rem 1.5rem 3rem; }
+            section { padding: 4rem 1.5rem; }
+            .case-studies-grid { grid-template-columns: 1fr; }
+            .metrics-bar { grid-template-columns: repeat(2, 1fr); }
+        }
+
+        @media (max-width: 480px) {
+            .nav-links { display: none; }
+            .metrics-bar { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="grid-bg"></div>
+    <div class="glow-orb glow-orb-1"></div>
+    <div class="glow-orb glow-orb-2"></div>
+
+    <!-- ====== NAVIGATION ====== -->
+    <nav>
+        <div class="nav-logo">// NATASHA LYE</div>
+        <div class="nav-links">
+            <a href="#work">Work</a>
+            <a href="#skills">Skills</a>
+            <a href="#experience">Experience</a>
+            <a href="#contact">Contact</a>
+        </div>
+    </nav>
+
+    <!-- ====== HERO ====== -->
+    <div class="hero">
+        <div class="hero-content">
+            <div class="hero-tag">
+                <span class="dot"></span>
+                Open to PM &amp; PMM opportunities
+            </div>
+            <h1>
+                From Growth Marketing<br>
+                to <span class="gradient-text">Product Thinking</span>
+            </h1>
+            <p class="hero-description">
+                Growth MarTech specialist at Crypto.com with a track record spanning Google, Grab, and EY. I bridge paid acquisition, CRM, and data engineering to drive measurable outcomes — now channeling that into product.
+            </p>
+            <div class="hero-ctas">
+                <a href="#work" class="btn-primary">View Case Studies ↓</a>
+                <a href="#contact" class="btn-secondary">Get in Touch</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- ====== IMPACT METRICS ====== -->
+    <section>
+        <div class="metrics-bar">
+            <div class="metric">
+                <div class="metric-value">20%+</div>
+                <div class="metric-label">Engagement &amp; Retention Lift</div>
+            </div>
+            <div class="metric">
+                <div class="metric-value">SGD 79K</div>
+                <div class="metric-label">Revenue from Sales Initiative</div>
+            </div>
+            <div class="metric">
+                <div class="metric-value">6</div>
+                <div class="metric-label">SEA Markets Covered</div>
+            </div>
+            <div class="metric">
+                <div class="metric-value">5</div>
+                <div class="metric-label">Companies incl. FAANG</div>
+            </div>
+        </div>
+    </section>
+
+    <hr class="section-divider">
+
+    <!-- ====== CASE STUDIES ====== -->
+    <section id="work">
+        <div class="section-label">// 01 — Case Studies</div>
+        <h2 class="section-title">Selected Work</h2>
+        <p class="section-subtitle">Real projects demonstrating product thinking, user-centricity, and measurable impact.</p>
+
+        <div class="case-studies-grid">
+
+            <!-- CASE STUDY 1: Paid-to-CRM Personalization -->
+            <div class="case-card" onclick="document.getElementById('modal-1').style.display='flex'">
+                <div class="case-card-image" style="display:flex; gap:0; padding: 1.2rem 1.5rem; align-items:center; justify-content:center; background: linear-gradient(135deg, #0d1117, #161b22);">
+                    <img src="case-push-1.png" alt="Push notification - Recurring Buys" style="width:48%; height:auto; border-radius:10px; box-shadow: 0 4px 20px rgba(0,0,0,0.4);">
+                    <img src="case-push-2.png" alt="Push notification - Welcome Bonus" style="width:48%; height:auto; border-radius:10px; box-shadow: 0 4px 20px rgba(0,0,0,0.4);">
+                </div>
+                <div class="case-card-body">
+                    <div class="case-card-tags">
+                        <span class="tag">CRM</span>
+                        <span class="tag blue">Paid Ads</span>
+                        <span class="tag purple">Data</span>
+                    </div>
+                    <h3>Paid-to-CRM Personalized Push Strategy</h3>
+                    <p>Designed a cross-channel system to personalize CRM push notifications for non-KYC users based on the specific paid ad creative that acquired them — mirroring each ad's CTA and incentive.</p>
+                    <div class="case-card-result">↑ 35% KYC conversion uplift vs. control</div>
+                </div>
+            </div>
+
+            <!-- MODAL for Case Study 1 -->
+            <div id="modal-1" style="display:none; position:fixed; top:0; left:0; right:0; bottom:0; z-index:999; background:rgba(0,0,0,0.85); backdrop-filter:blur(8px); align-items:center; justify-content:center; padding:2rem;" onclick="if(event.target===this)this.style.display='none'">
+                <div style="background:var(--bg-card); border:1px solid var(--border); border-radius:16px; max-width:720px; width:100%; max-height:90vh; overflow-y:auto; padding:2.5rem;">
+                    <div style="display:flex; justify-content:space-between; align-items:start; margin-bottom:1.5rem;">
+                        <div class="case-card-tags">
+                            <span class="tag">CRM</span>
+                            <span class="tag blue">Paid Ads</span>
+                            <span class="tag purple">Data</span>
+                        </div>
+                        <span style="cursor:pointer; color:var(--text-muted); font-size:1.5rem; line-height:1;" onclick="document.getElementById('modal-1').style.display='none'">&times;</span>
+                    </div>
+                    <h3 style="font-size:1.5rem; font-weight:700; margin-bottom:0.75rem;">Paid-to-CRM Personalized Push Strategy</h3>
+                    <p style="color:var(--text-secondary); margin-bottom:1.5rem; line-height:1.7;">Designed and executed a cross-channel personalization initiative connecting paid acquisition data to CRM messaging — resulting in a <strong style="color:var(--accent);">35% uplift in KYC conversions</strong> versus the control group.</p>
+
+                    <div style="margin-bottom:1.5rem;">
+                        <h4 style="font-size:0.85rem; font-family:'JetBrains Mono',monospace; color:var(--accent); margin-bottom:0.5rem;">// PROBLEM</h4>
+                        <p style="color:var(--text-secondary); font-size:0.9rem; line-height:1.7;">Users acquired through paid ads on Google and Meta were receiving generic onboarding push notifications that didn't reflect the specific incentive or CTA they originally engaged with. This disconnect was contributing to low KYC completion rates among newly acquired users.</p>
+                    </div>
+
+                    <div style="margin-bottom:1.5rem;">
+                        <h4 style="font-size:0.85rem; font-family:'JetBrains Mono',monospace; color:var(--accent); margin-bottom:0.5rem;">// SOLUTION</h4>
+                        <p style="color:var(--text-secondary); font-size:0.9rem; line-height:1.7;">Built a personalized push notification system that dynamically matched CRM messaging to the specific paid ad creative that acquired each user. For example, users acquired via a "Welcome Bonus" ad received a push reinforcing that exact offer, while users from a "Recurring Buys" campaign saw messaging about zero-fee trading.</p>
+                    </div>
+
+                    <div style="display:flex; gap:1rem; margin-bottom:1.5rem; justify-content:center; background:var(--bg-secondary); border-radius:12px; padding:1.5rem;">
+                        <img src="case-push-1.png" alt="Push - Recurring Buys" style="width:45%; border-radius:8px; box-shadow: 0 4px 16px rgba(0,0,0,0.4);">
+                        <img src="case-push-2.png" alt="Push - Welcome Bonus" style="width:45%; border-radius:8px; box-shadow: 0 4px 16px rgba(0,0,0,0.4);">
+                    </div>
+
+                    <div style="margin-bottom:1.5rem;">
+                        <h4 style="font-size:0.85rem; font-family:'JetBrains Mono',monospace; color:var(--accent); margin-bottom:0.5rem;">// TECHNICAL EXECUTION</h4>
+                        <p style="color:var(--text-secondary); font-size:0.9rem; line-height:1.7;">Distilled user acquisition source data from the <strong style="color:var(--text-primary);">AppsFlyer</strong> integration and dynamically connected it with campaign creative data stored in <strong style="color:var(--text-primary);">Databricks</strong>. Mapped the enriched user segments to a table in <strong style="color:var(--text-primary);">Segment</strong> via Reverse ETL (RETL), then synced to <strong style="color:var(--text-primary);">Braze</strong> for targeted push notification delivery.</p>
+                    </div>
+
+                    <div style="background:var(--bg-secondary); border-radius:10px; padding:1.25rem; display:flex; gap:2rem; flex-wrap:wrap;">
+                        <div>
+                            <div style="font-size:1.6rem; font-weight:800; background:var(--gradient-1); -webkit-background-clip:text; -webkit-text-fill-color:transparent;">+35%</div>
+                            <div style="font-size:0.75rem; color:var(--text-secondary); text-transform:uppercase; letter-spacing:0.05em;">KYC Uplift vs. Control</div>
+                        </div>
+                        <div>
+                            <div style="font-size:1.6rem; font-weight:800; color:var(--text-primary);">4</div>
+                            <div style="font-size:0.75rem; color:var(--text-secondary); text-transform:uppercase; letter-spacing:0.05em;">Systems Integrated</div>
+                        </div>
+                        <div>
+                            <div style="font-size:1.6rem; font-weight:800; color:var(--text-primary);">Dynamic</div>
+                            <div style="font-size:0.75rem; color:var(--text-secondary); text-transform:uppercase; letter-spacing:0.05em;">Creative Matching</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CASE STUDY 2: Web3 Daily Summary — News API to CRM -->
+            <div class="case-card" onclick="document.getElementById('modal-2').style.display='flex'">
+                <div class="case-card-image" style="display:flex; align-items:center; justify-content:center; background: linear-gradient(135deg, #0b1120, #131a2e); padding: 1rem;">
+                    <img src="case-web3-summary.png" alt="Web3 Daily Summary push" style="height:180px; width:auto; border-radius:10px; box-shadow: 0 4px 20px rgba(0,0,0,0.5);">
+                </div>
+                <div class="case-card-body">
+                    <div class="case-card-tags">
+                        <span class="tag">CRM</span>
+                        <span class="tag blue">API</span>
+                        <span class="tag purple">NLP</span>
+                    </div>
+                    <h3>AI-Driven Web3 Daily News Digest</h3>
+                    <p>Built a dynamic CRM content pipeline that pulls from an internal news API with sentiment analysis to deliver personalized daily crypto news summaries to users.</p>
+                    <div class="case-card-result">Automated · Personalized · Sentiment-driven</div>
+                </div>
+            </div>
+
+            <!-- MODAL for Case Study 2 -->
+            <div id="modal-2" style="display:none; position:fixed; top:0; left:0; right:0; bottom:0; z-index:999; background:rgba(0,0,0,0.85); backdrop-filter:blur(8px); align-items:center; justify-content:center; padding:2rem;" onclick="if(event.target===this)this.style.display='none'">
+                <div style="background:var(--bg-card); border:1px solid var(--border); border-radius:16px; max-width:720px; width:100%; max-height:90vh; overflow-y:auto; padding:2.5rem;">
+                    <div style="display:flex; justify-content:space-between; align-items:start; margin-bottom:1.5rem;">
+                        <div class="case-card-tags">
+                            <span class="tag">CRM</span>
+                            <span class="tag blue">API</span>
+                            <span class="tag purple">NLP</span>
+                        </div>
+                        <span style="cursor:pointer; color:var(--text-muted); font-size:1.5rem; line-height:1;" onclick="document.getElementById('modal-2').style.display='none'">&times;</span>
+                    </div>
+                    <h3 style="font-size:1.5rem; font-weight:700; margin-bottom:0.75rem;">AI-Driven Web3 Daily News Digest</h3>
+                    <p style="color:var(--text-secondary); margin-bottom:1.5rem; line-height:1.7;">Designed and implemented an automated CRM content pipeline that delivers personalized daily crypto news summaries — powered by an internal news API and sentiment analysis.</p>
+
+                    <div style="margin-bottom:1.5rem;">
+                        <h4 style="font-size:0.85rem; font-family:'JetBrains Mono',monospace; color:var(--accent); margin-bottom:0.5rem;">// PROBLEM</h4>
+                        <p style="color:var(--text-secondary); font-size:0.9rem; line-height:1.7;">Crypto markets move fast — users want to stay informed but are overwhelmed by noise. Generic news roundups lack relevance, and manually curating daily content doesn't scale across a global user base.</p>
+                    </div>
+
+                    <div style="margin-bottom:1.5rem;">
+                        <h4 style="font-size:0.85rem; font-family:'JetBrains Mono',monospace; color:var(--accent); margin-bottom:0.5rem;">// SOLUTION</h4>
+                        <p style="color:var(--text-secondary); font-size:0.9rem; line-height:1.7;">Leveraged an internal news API that scrapes RSS feeds and categorises articles using <strong style="color:var(--text-primary);">sentiment analysis</strong> to surface the most relevant stories. For each CRM push, pulled the top news stories associated with a target cryptocurrency, then delivered them as a "Your Daily Web3 Summary" in-app card — giving users a curated, timely reason to engage.</p>
+                    </div>
+
+                    <div style="display:flex; margin-bottom:1.5rem; justify-content:center; background:var(--bg-secondary); border-radius:12px; padding:1.5rem;">
+                        <img src="case-web3-summary.png" alt="Web3 Daily Summary" style="height:260px; width:auto; border-radius:8px; box-shadow: 0 4px 16px rgba(0,0,0,0.4);">
+                    </div>
+
+                    <div style="margin-bottom:1.5rem;">
+                        <h4 style="font-size:0.85rem; font-family:'JetBrains Mono',monospace; color:var(--accent); margin-bottom:0.5rem;">// TECHNICAL EXECUTION</h4>
+                        <p style="color:var(--text-secondary); font-size:0.9rem; line-height:1.7;">The internal news API ingests articles from multiple RSS feeds and applies <strong style="color:var(--text-primary);">NLP-based sentiment classification</strong> to categorize stories by topic and sentiment. On the CRM side, built a dynamic content block in <strong style="color:var(--text-primary);">Braze</strong> that queries the API at send-time, pulling the top-ranked stories for the target coin and populating the push/in-app card with headlines, dates, and a trade CTA.</p>
+                    </div>
+
+                    <div style="background:var(--bg-secondary); border-radius:10px; padding:1.25rem; display:flex; gap:2rem; flex-wrap:wrap;">
+                        <div>
+                            <div style="font-size:1.6rem; font-weight:800; background:var(--gradient-1); -webkit-background-clip:text; -webkit-text-fill-color:transparent;">Automated</div>
+                            <div style="font-size:0.75rem; color:var(--text-secondary); text-transform:uppercase; letter-spacing:0.05em;">Daily Content Pipeline</div>
+                        </div>
+                        <div>
+                            <div style="font-size:1.6rem; font-weight:800; color:var(--text-primary);">NLP</div>
+                            <div style="font-size:0.75rem; color:var(--text-secondary); text-transform:uppercase; letter-spacing:0.05em;">Sentiment Analysis</div>
+                        </div>
+                        <div>
+                            <div style="font-size:1.6rem; font-weight:800; color:var(--text-primary);">Dynamic</div>
+                            <div style="font-size:0.75rem; color:var(--text-secondary); text-transform:uppercase; letter-spacing:0.05em;">Braze Content Blocks</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CASE STUDY 3 -->
+            <div class="case-card">
+                <div class="case-card-image">
+                    <div class="placeholder-icon">🧪</div>
+                </div>
+                <div class="case-card-body">
+                    <div class="case-card-tags">
+                        <span class="tag blue">Product</span>
+                        <span class="tag">A/B Testing</span>
+                    </div>
+                    <h3>Feature Launch GTM</h3>
+                    <p>Led go-to-market for a new product feature — coordinating cross-functional teams, running A/B tests, and driving adoption through targeted in-app messaging.</p>
+                    <div class="case-card-result">↑ 41% feature adoption in 30 days</div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <hr class="section-divider">
+
+    <!-- ====== SKILLS ====== -->
+    <section id="skills">
+        <div class="section-label">// 02 — Capabilities</div>
+        <h2 class="section-title">What I Bring</h2>
+        <p class="section-subtitle">Bridging the gap between marketing execution and product strategy.</p>
+
+        <div class="skills-grid">
+            <div class="skill-card">
+                <div class="skill-icon green">📈</div>
+                <h3>Growth &amp; Paid Acquisition</h3>
+                <p>Multi-channel paid strategy across Google, Meta, X, and TikTok. CAC optimization, attribution modeling, and scaling spend across APAC markets.</p>
+            </div>
+            <div class="skill-card">
+                <div class="skill-icon blue">🔄</div>
+                <h3>CRM &amp; Lifecycle</h3>
+                <p>End-to-end lifecycle orchestration using Braze. Segmentation, push/email/in-app campaigns, retention analysis, and personalization at scale.</p>
+            </div>
+            <div class="skill-card">
+                <div class="skill-icon purple">🧠</div>
+                <h3>MarTech &amp; Data Infrastructure</h3>
+                <p>Twilio Segment, Mixpanel, AppsFlyer, Databricks. Reverse ETL pipelines, JSON RPC APIs, and first-party data architecture for marketing automation.</p>
+            </div>
+            <div class="skill-card">
+                <div class="skill-icon green">📊</div>
+                <h3>Data &amp; Analytics</h3>
+                <p>Python and SQL for analysis and automation. Building dashboards, pulling insights from campaign data, and making data-driven decisions at speed.</p>
+            </div>
+            <div class="skill-card">
+                <div class="skill-icon blue">🚀</div>
+                <h3>Go-to-Market Strategy</h3>
+                <p>Product launches, positioning, sales enablement, and cross-functional coordination across marketing, product, and engineering teams.</p>
+            </div>
+            <div class="skill-card">
+                <div class="skill-icon purple">🌏</div>
+                <h3>APAC &amp; SEA Markets</h3>
+                <p>Hands-on experience across 6 South-East Asian markets at Grab and APAC-wide strategy at Google and Crypto.com. Understands regional nuance.</p>
+            </div>
+        </div>
+    </section>
+
+    <hr class="section-divider">
+
+    <!-- ====== EXPERIENCE ====== -->
+    <section id="experience">
+        <div class="section-label">// 03 — Experience</div>
+        <h2 class="section-title">Career Timeline</h2>
+        <p class="section-subtitle">My path from marketing execution to product-oriented strategy.</p>
+
+        <div class="timeline">
+            <div class="timeline-item">
+                <div class="timeline-date">Nov 2023 — Present</div>
+                <h3>Growth MarTech — CRM / Paid Marketing</h3>
+                <div class="timeline-company">Crypto.com</div>
+                <p>Own first-party data and advanced analytics driving 20%+ engagement and retention lift across paid and organic channels (Google, Meta, X, TikTok). Provide API development support using JSON RPC protocols for dynamic personalization and enterprise-scale data automation. Collaborate with engineering on technical troubleshooting to ensure high-speed data processing across marketing infrastructure.</p>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-date">Nov 2022 — Nov 2023</div>
+                <h3>Google Ads, Sales Strategy Apprentice — Mid-Market</h3>
+                <div class="timeline-company">Google</div>
+                <p>Identified high-impact opportunities and developed go-to-market strategies for high-value APAC clients. Built critical business insights using analytics to inform cross-functional strategy — specifically share-of-wallet sizing and revenue growth in the fashion retail vertical.</p>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-date">Jan — Jul 2022</div>
+                <h3>GrabAds, Regional Strategy Intern</h3>
+                <div class="timeline-company">Grab Holdings</div>
+                <p>Cross-collaborated with C-level stakeholders to deliver advertising solutions across 6 SEA markets. Led a sales enablement initiative in Indonesia generating SGD 79K in 3 weeks. Analysed campaign performance to optimise client acquisition and product adoption for SMB and commercial accounts.</p>
+            </div>
+        </div>
+    </section>
+
+    <hr class="section-divider">
+
+    <!-- ====== EDUCATION ====== -->
+    <section>
+        <div class="section-label">// 04 — Education</div>
+        <h2 class="section-title">Education</h2>
+        <div class="timeline">
+            <div class="timeline-item">
+                <div class="timeline-date">2018 — 2022</div>
+                <h3>Bachelor of Business Administration (Honours)</h3>
+                <div class="timeline-company">National University of Singapore</div>
+                <p>NUS Varsity Tennis — Team Manager. Meet Ventures Zero to One Entrepreneurship Program — Research Assistant.</p>
+            </div>
+        </div>
+    </section>
+
+    <hr class="section-divider">
+
+    <!-- ====== CONTACT ====== -->
+    <section id="contact" class="contact-section">
+        <div class="section-label">// 05 — Let's Connect</div>
+        <h2 class="section-title">Get in Touch</h2>
+        <p class="section-subtitle" style="margin: 0 auto 2rem;">
+            Open to PM and PMM roles — especially in fintech, crypto, and consumer tech.
+        </p>
+
+        <div class="contact-links">
+            <a href="mailto:lyenatasha@gmail.com" class="contact-link">✉️ Email</a>
+            <a href="https://linkedin.com/in/natasha-lye/" target="_blank" class="contact-link">💼 LinkedIn</a>
+            <a href="#" class="contact-link">📄 Resume (PDF)</a>
+        </div>
+    </section>
+
+    <!-- ====== FOOTER ====== -->
+    <footer>
+        Built by Natasha Lye · 2026
+    </footer>
+
+</body>
+</html>
