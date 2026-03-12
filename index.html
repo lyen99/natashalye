@@ -1,567 +1,849 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Natasha Lye – Product & Growth</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Syne:wght@700;800&display=swap" rel="stylesheet" />
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Natasha Lye — Product Portfolio</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #0a0a0f;
+            --bg-secondary: #111118;
+            --bg-card: #16161f;
+            --bg-card-hover: #1c1c28;
+            --accent: #00d4aa;
+            --accent-dim: #00d4aa22;
+            --accent-mid: #00d4aa55;
+            --text-primary: #e8e8ed;
+            --text-secondary: #8888a0;
+            --text-muted: #55556a;
+            --border: #222233;
+            --gradient-1: linear-gradient(135deg, #00d4aa, #007cf0);
+            --gradient-2: linear-gradient(135deg, #007cf0, #9b59b6);
+        }
 
-    :root {
-      --grad-1: #0f0c29;
-      --grad-2: #302b63;
-      --grad-3: #24243e;
-      --accent: #a78bfa;
-      --accent2: #38bdf8;
-      --glass-bg: rgba(255,255,255,0.07);
-      --glass-border: rgba(255,255,255,0.15);
-      --glass-shadow: 0 8px 32px rgba(0,0,0,0.37);
-      --text: #f1f5f9;
-      --muted: #94a3b8;
-      --radius: 20px;
-    }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
-    html { scroll-behavior: smooth; }
+        html {
+            scroll-behavior: smooth;
+            scrollbar-width: thin;
+            scrollbar-color: var(--accent-dim) var(--bg-primary);
+        }
 
-    body {
-      font-family: 'Inter', sans-serif;
-      background: linear-gradient(135deg, var(--grad-1) 0%, var(--grad-2) 50%, var(--grad-3) 100%);
-      background-attachment: fixed;
-      color: var(--text);
-      min-height: 100vh;
-      overflow-x: hidden;
-    }
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.7;
+            overflow-x: hidden;
+        }
 
-    /* Animated background orbs */
-    body::before, body::after {
-      content: '';
-      position: fixed;
-      border-radius: 50%;
-      filter: blur(80px);
-      opacity: 0.25;
-      pointer-events: none;
-      z-index: 0;
-    }
-    body::before {
-      width: 600px; height: 600px;
-      background: radial-gradient(circle, #7c3aed, transparent);
-      top: -150px; left: -150px;
-      animation: float1 12s ease-in-out infinite alternate;
-    }
-    body::after {
-      width: 500px; height: 500px;
-      background: radial-gradient(circle, #0ea5e9, transparent);
-      bottom: -100px; right: -100px;
-      animation: float2 15s ease-in-out infinite alternate;
-    }
-    @keyframes float1 { from { transform: translate(0,0); } to { transform: translate(80px, 60px); } }
-    @keyframes float2 { from { transform: translate(0,0); } to { transform: translate(-60px, -40px); } }
+        .grid-bg {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background-image:
+                linear-gradient(var(--border) 1px, transparent 1px),
+                linear-gradient(90deg, var(--border) 1px, transparent 1px);
+            background-size: 60px 60px;
+            opacity: 0.15;
+            pointer-events: none;
+            z-index: 0;
+        }
 
-    /* Layout */
-    .container { max-width: 1000px; margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+        .glow-orb {
+            position: fixed;
+            width: 600px; height: 600px;
+            border-radius: 50%;
+            filter: blur(120px);
+            opacity: 0.08;
+            pointer-events: none;
+            z-index: 0;
+        }
 
-    /* Glass card */
-    .glass {
-      background: var(--glass-bg);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      border: 1px solid var(--glass-border);
-      border-radius: var(--radius);
-      box-shadow: var(--glass-shadow);
-    }
+        .glow-orb-1 { top: -200px; right: -100px; background: #00d4aa; }
+        .glow-orb-2 { bottom: -200px; left: -100px; background: #007cf0; }
 
-    /* NAV */
-    nav {
-      position: fixed; top: 0; left: 0; right: 0;
-      z-index: 100;
-      padding: 16px 0;
-      background: rgba(15,12,41,0.6);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      border-bottom: 1px solid var(--glass-border);
-    }
-    nav .container { display: flex; align-items: center; justify-content: space-between; }
-    .nav-logo {
-      font-family: 'Syne', sans-serif;
-      font-size: 1.2rem;
-      font-weight: 800;
-      background: linear-gradient(90deg, var(--accent), var(--accent2));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-    .nav-links { display: flex; gap: 32px; list-style: none; }
-    .nav-links a {
-      color: var(--muted);
-      text-decoration: none;
-      font-size: 0.875rem;
-      font-weight: 500;
-      letter-spacing: 0.05em;
-      transition: color 0.2s;
-    }
-    .nav-links a:hover { color: var(--text); }
+        nav {
+            position: fixed; top: 0; left: 0; right: 0;
+            z-index: 100;
+            padding: 1.2rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(10, 10, 15, 0.8);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+        }
 
-    /* HERO */
-    .hero {
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      padding: 100px 0 80px;
-    }
-    .hero-inner { max-width: 700px; }
-    .hero-tag {
-      display: inline-flex; align-items: center; gap: 8px;
-      background: rgba(167,139,250,0.15);
-      border: 1px solid rgba(167,139,250,0.3);
-      border-radius: 100px;
-      padding: 6px 16px;
-      font-size: 0.8rem;
-      font-weight: 500;
-      color: var(--accent);
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      margin-bottom: 28px;
-    }
-    .hero-tag::before { content: '◆'; font-size: 0.6rem; }
-    h1 {
-      font-family: 'Syne', sans-serif;
-      font-size: clamp(3rem, 8vw, 5.5rem);
-      font-weight: 800;
-      line-height: 1;
-      margin-bottom: 24px;
-      letter-spacing: -0.02em;
-    }
-    h1 span {
-      background: linear-gradient(90deg, var(--accent) 0%, var(--accent2) 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-    .hero-desc {
-      font-size: 1.15rem;
-      color: var(--muted);
-      line-height: 1.75;
-      max-width: 580px;
-      margin-bottom: 40px;
-    }
-    .hero-desc strong { color: var(--text); font-weight: 600; }
-    .hero-cta { display: flex; gap: 16px; flex-wrap: wrap; }
-    .btn {
-      display: inline-flex; align-items: center; gap: 8px;
-      padding: 14px 28px;
-      border-radius: 100px;
-      font-size: 0.9rem;
-      font-weight: 600;
-      text-decoration: none;
-      transition: all 0.25s;
-      cursor: pointer;
-      border: none;
-    }
-    .btn-primary {
-      background: linear-gradient(135deg, var(--accent), #7c3aed);
-      color: #fff;
-      box-shadow: 0 0 30px rgba(124,58,237,0.4);
-    }
-    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 0 40px rgba(124,58,237,0.6); }
-    .btn-ghost {
-      background: var(--glass-bg);
-      border: 1px solid var(--glass-border);
-      color: var(--text);
-      backdrop-filter: blur(8px);
-    }
-    .btn-ghost:hover { background: rgba(255,255,255,0.12); transform: translateY(-2px); }
-    .hero-stats {
-      display: flex; gap: 40px; margin-top: 60px; flex-wrap: wrap;
-    }
-    .stat { }
-    .stat-num {
-      font-family: 'Syne', sans-serif;
-      font-size: 2rem;
-      font-weight: 800;
-      background: linear-gradient(90deg, var(--accent), var(--accent2));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-    .stat-label { font-size: 0.8rem; color: var(--muted); margin-top: 2px; }
+        .nav-logo {
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 600;
+            font-size: 1rem;
+            color: var(--accent);
+            letter-spacing: -0.02em;
+        }
 
-    /* SECTIONS */
-    section { padding: 100px 0; position: relative; z-index: 1; }
-    .section-label {
-      font-size: 0.75rem;
-      font-weight: 600;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      color: var(--accent);
-      margin-bottom: 12px;
-    }
-    .section-title {
-      font-family: 'Syne', sans-serif;
-      font-size: clamp(2rem, 4vw, 3rem);
-      font-weight: 800;
-      line-height: 1.1;
-      margin-bottom: 48px;
-    }
+        .nav-links { display: flex; gap: 2rem; }
 
-    /* ABOUT */
-    .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
-    .about-card {
-      padding: 32px;
-    }
-    .about-card.wide { grid-column: 1 / -1; }
-    .about-card h3 {
-      font-size: 0.75rem;
-      font-weight: 600;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--accent2);
-      margin-bottom: 16px;
-    }
-    .about-card p { color: var(--muted); line-height: 1.8; font-size: 0.95rem; }
-    .about-card p strong { color: var(--text); }
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            font-weight: 500;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            transition: color 0.3s;
+        }
 
-    /* EXPERIENCE */
-    .timeline { position: relative; padding-left: 28px; }
-    .timeline::before {
-      content: '';
-      position: absolute; left: 0; top: 8px; bottom: 8px;
-      width: 1px;
-      background: linear-gradient(to bottom, var(--accent), var(--accent2), transparent);
-    }
-    .timeline-item { position: relative; margin-bottom: 40px; }
-    .timeline-item::before {
-      content: '';
-      position: absolute; left: -33px; top: 8px;
-      width: 10px; height: 10px;
-      border-radius: 50%;
-      background: var(--accent);
-      box-shadow: 0 0 12px var(--accent);
-    }
-    .exp-card { padding: 28px 32px; }
-    .exp-header { display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 8px; margin-bottom: 6px; }
-    .exp-title { font-size: 1.05rem; font-weight: 600; }
-    .exp-date { font-size: 0.8rem; color: var(--muted); white-space: nowrap; }
-    .exp-company {
-      font-size: 0.85rem;
-      color: var(--accent);
-      font-weight: 500;
-      margin-bottom: 16px;
-    }
-    .exp-bullets { list-style: none; }
-    .exp-bullets li {
-      font-size: 0.9rem;
-      color: var(--muted);
-      line-height: 1.7;
-      padding: 4px 0 4px 20px;
-      position: relative;
-    }
-    .exp-bullets li::before {
-      content: '→';
-      position: absolute; left: 0;
-      color: var(--accent2);
-      font-size: 0.8rem;
-    }
-    .exp-bullets li strong { color: var(--text); }
+        .nav-links a:hover { color: var(--accent); }
 
-    /* SKILLS */
-    .skills-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 16px; }
-    .skill-card {
-      padding: 20px 24px;
-      display: flex; align-items: center; gap: 12px;
-      transition: transform 0.2s, box-shadow 0.2s;
-    }
-    .skill-card:hover { transform: translateY(-3px); box-shadow: 0 16px 40px rgba(0,0,0,0.4); }
-    .skill-icon {
-      width: 36px; height: 36px;
-      border-radius: 10px;
-      background: linear-gradient(135deg, rgba(167,139,250,0.2), rgba(56,189,248,0.2));
-      border: 1px solid rgba(167,139,250,0.3);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 1.1rem;
-      flex-shrink: 0;
-    }
-    .skill-name { font-size: 0.875rem; font-weight: 500; }
+        .hero {
+            position: relative;
+            z-index: 1;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            padding: 8rem 2rem 4rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
 
-    /* EDUCATION */
-    .edu-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
-    .edu-card { padding: 32px; }
-    .edu-degree { font-size: 1rem; font-weight: 600; margin-bottom: 6px; }
-    .edu-school { font-size: 0.85rem; color: var(--accent); font-weight: 500; margin-bottom: 4px; }
-    .edu-year { font-size: 0.8rem; color: var(--muted); margin-bottom: 16px; }
-    .edu-bullets { list-style: none; }
-    .edu-bullets li { font-size: 0.85rem; color: var(--muted); padding: 3px 0 3px 16px; position: relative; }
-    .edu-bullets li::before { content: '·'; position: absolute; left: 4px; color: var(--accent2); }
+        .hero-content { max-width: 800px; }
 
-    /* CONTACT */
-    .contact-inner { max-width: 600px; margin: 0 auto; text-align: center; }
-    .contact-card { padding: 60px 48px; }
-    .contact-card .section-title { margin-bottom: 16px; }
-    .contact-desc { color: var(--muted); font-size: 1rem; line-height: 1.7; margin-bottom: 40px; }
-    .contact-links { display: flex; justify-content: center; gap: 16px; flex-wrap: wrap; }
+        .hero-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--accent);
+            background: var(--accent-dim);
+            border: 1px solid var(--accent-mid);
+            padding: 0.4rem 1rem;
+            border-radius: 100px;
+            margin-bottom: 2rem;
+            animation: fadeInUp 0.8s ease-out;
+        }
 
-    /* FOOTER */
-    footer {
-      padding: 32px 0;
-      text-align: center;
-      color: var(--muted);
-      font-size: 0.8rem;
-      position: relative; z-index: 1;
-      border-top: 1px solid var(--glass-border);
-    }
+        .hero-tag .dot {
+            width: 6px; height: 6px;
+            border-radius: 50%;
+            background: var(--accent);
+            animation: pulse 2s infinite;
+        }
 
-    /* Divider */
-    .divider {
-      height: 1px;
-      background: linear-gradient(90deg, transparent, var(--glass-border), transparent);
-      margin: 0;
-    }
+        .hero h1 {
+            font-size: clamp(2.8rem, 6vw, 5rem);
+            font-weight: 800;
+            line-height: 1.05;
+            letter-spacing: -0.03em;
+            margin-bottom: 1.5rem;
+            animation: fadeInUp 0.8s ease-out 0.1s both;
+        }
 
-    /* Responsive */
-    @media (max-width: 640px) {
-      .about-grid { grid-template-columns: 1fr; }
-      .edu-grid { grid-template-columns: 1fr; }
-      .about-card.wide { grid-column: 1; }
-      .nav-links { display: none; }
-      .hero-stats { gap: 24px; }
-    }
-  </style>
+        .hero h1 .gradient-text {
+            background: var(--gradient-1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-description {
+            font-size: 1.15rem;
+            color: var(--text-secondary);
+            max-width: 580px;
+            line-height: 1.8;
+            margin-bottom: 2.5rem;
+            animation: fadeInUp 0.8s ease-out 0.2s both;
+        }
+
+        .hero-ctas {
+            display: flex; gap: 1rem;
+            flex-wrap: wrap;
+            animation: fadeInUp 0.8s ease-out 0.3s both;
+        }
+
+        .btn-primary {
+            display: inline-flex;
+            align-items: center; gap: 0.5rem;
+            padding: 0.85rem 2rem;
+            background: var(--accent);
+            color: var(--bg-primary);
+            font-family: 'Outfit', sans-serif;
+            font-weight: 600;
+            font-size: 0.9rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px var(--accent-mid);
+        }
+
+        .btn-secondary {
+            display: inline-flex;
+            align-items: center; gap: 0.5rem;
+            padding: 0.85rem 2rem;
+            background: transparent;
+            color: var(--text-primary);
+            font-family: 'Outfit', sans-serif;
+            font-weight: 500;
+            font-size: 0.9rem;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        section {
+            position: relative;
+            z-index: 1;
+            padding: 6rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.7rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 0.75rem;
+        }
+
+        .section-title {
+            font-size: clamp(1.8rem, 4vw, 2.8rem);
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            margin-bottom: 1rem;
+        }
+
+        .section-subtitle {
+            color: var(--text-secondary);
+            font-size: 1.05rem;
+            max-width: 600px;
+            margin-bottom: 3rem;
+        }
+
+        .metrics-bar {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1px;
+            background: var(--border);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            overflow: hidden;
+            margin-bottom: 4rem;
+        }
+
+        .metric {
+            background: var(--bg-secondary);
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .metric-value {
+            font-size: 2.2rem;
+            font-weight: 800;
+            background: var(--gradient-1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .metric-label {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            margin-top: 0.25rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .case-studies-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .case-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            overflow: hidden;
+            transition: all 0.4s;
+            cursor: pointer;
+        }
+
+        .case-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--accent-mid);
+            box-shadow: 0 20px 60px rgba(0, 212, 170, 0.06);
+        }
+
+        .case-card-image {
+            width: 100%;
+            height: 200px;
+            background: var(--bg-secondary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .case-card-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .case-card-image .placeholder-icon {
+            font-size: 3rem;
+            opacity: 0.3;
+        }
+
+        .case-card-body { padding: 1.5rem; }
+
+        .case-card-tags {
+            display: flex; gap: 0.5rem;
+            flex-wrap: wrap;
+            margin-bottom: 0.75rem;
+        }
+
+        .tag {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.65rem;
+            padding: 0.25rem 0.6rem;
+            border-radius: 4px;
+            background: var(--accent-dim);
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .tag.blue { background: rgba(0, 124, 240, 0.15); color: #60a5fa; }
+        .tag.purple { background: rgba(155, 89, 182, 0.15); color: #c084fc; }
+
+        .case-card h3 {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            letter-spacing: -0.01em;
+        }
+
+        .case-card p {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        .case-card-result {
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+            color: var(--accent);
+        }
+
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .skill-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 2rem;
+            transition: all 0.3s;
+        }
+
+        .skill-card:hover { border-color: var(--accent-mid); }
+
+        .skill-icon {
+            width: 48px; height: 48px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.4rem;
+            margin-bottom: 1rem;
+        }
+
+        .skill-icon.green { background: rgba(0, 212, 170, 0.12); }
+        .skill-icon.blue { background: rgba(0, 124, 240, 0.12); }
+        .skill-icon.purple { background: rgba(155, 89, 182, 0.12); }
+
+        .skill-card h3 { font-size: 1rem; font-weight: 600; margin-bottom: 0.5rem; }
+        .skill-card p { font-size: 0.85rem; color: var(--text-secondary); line-height: 1.6; }
+
+        .timeline { position: relative; padding-left: 2rem; }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 0; top: 0; bottom: 0;
+            width: 2px;
+            background: linear-gradient(to bottom, var(--accent), var(--accent-mid), transparent);
+        }
+
+        .timeline-item { position: relative; padding-bottom: 3rem; }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -2rem; top: 0.5rem;
+            width: 10px; height: 10px;
+            border-radius: 50%;
+            background: var(--accent);
+            border: 3px solid var(--bg-primary);
+            transform: translateX(-4px);
+        }
+
+        .timeline-date {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--accent);
+            margin-bottom: 0.25rem;
+        }
+
+        .timeline-item h3 { font-size: 1.15rem; font-weight: 600; margin-bottom: 0.15rem; }
+
+        .timeline-company {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.75rem;
+        }
+
+        .timeline-item p {
+            font-size: 0.88rem;
+            color: var(--text-secondary);
+            line-height: 1.7;
+            max-width: 600px;
+        }
+
+        .contact-section { text-align: center; padding: 6rem 2rem 8rem; }
+
+        .contact-links {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-top: 2rem;
+        }
+
+        .contact-link {
+            display: inline-flex;
+            align-items: center; gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text-primary);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+        }
+
+        .contact-link:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+            transform: translateY(-2px);
+        }
+
+        footer {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            padding: 2rem;
+            border-top: 1px solid var(--border);
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        .section-divider {
+            border: none;
+            height: 1px;
+            background: var(--border);
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(24px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.4; }
+        }
+
+        @media (max-width: 768px) {
+            nav { padding: 1rem; }
+            .nav-links { gap: 1rem; }
+            .nav-links a { font-size: 0.75rem; }
+            .hero { padding: 7rem 1.5rem 3rem; }
+            section { padding: 4rem 1.5rem; }
+            .case-studies-grid { grid-template-columns: 1fr; }
+            .metrics-bar { grid-template-columns: repeat(2, 1fr); }
+        }
+
+        @media (max-width: 480px) {
+            .nav-links { display: none; }
+            .metrics-bar { grid-template-columns: 1fr; }
+        }
+    </style>
 </head>
 <body>
 
-  <!-- NAV -->
-  <nav>
-    <div class="container">
-      <div class="nav-logo">Natasha Lye</div>
-      <ul class="nav-links">
-        <li><a href="#about">About</a></li>
-        <li><a href="#experience">Experience</a></li>
-        <li><a href="#skills">Skills</a></li>
-        <li><a href="#education">Education</a></li>
-        <li><a href="#contact">Contact</a></li>
-      </ul>
-    </div>
-  </nav>
+    <div class="grid-bg"></div>
+    <div class="glow-orb glow-orb-1"></div>
+    <div class="glow-orb glow-orb-2"></div>
 
-  <!-- HERO -->
-  <section class="hero">
-    <div class="container">
-      <div class="hero-inner">
-        <div class="hero-tag">Transitioning to Product Management</div>
-        <h1>Hi, I'm <span>Natasha.</span></h1>
-        <p class="hero-desc">
-          I turn <strong>business objectives</strong> into measurable outcomes — translating CRM strategy and paid acquisition goals into <strong>technical requirements</strong>, then driving execution end-to-end to hit revenue targets.
+    <!-- ====== NAVIGATION ====== -->
+    <nav>
+        <div class="nav-logo">// NATASHA LYE</div>
+        <div class="nav-links">
+            <a href="#work">Work</a>
+            <a href="#skills">Skills</a>
+            <a href="#experience">Experience</a>
+            <a href="#contact">Contact</a>
+        </div>
+    </nav>
+
+    <!-- ====== HERO ====== -->
+    <div class="hero">
+        <div class="hero-content">
+            <div class="hero-tag">
+                <span class="dot"></span>
+                Open to PM &amp; PMM opportunities
+            </div>
+            <h1>
+                From Growth Marketing<br>
+                to <span class="gradient-text">Product Thinking</span>
+            </h1>
+            <p class="hero-description">
+                Growth MarTech specialist at Crypto.com with a track record spanning Google, Grab, and EY. I bridge paid acquisition, CRM, and data engineering to drive measurable outcomes — now channeling that into product.
+            </p>
+            <div class="hero-ctas">
+                <a href="#work" class="btn-primary">View Case Studies ↓</a>
+                <a href="#contact" class="btn-secondary">Get in Touch</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- ====== IMPACT METRICS ====== -->
+    <section>
+        <div class="metrics-bar">
+            <div class="metric">
+                <div class="metric-value">20%+</div>
+                <div class="metric-label">Engagement &amp; Retention Lift</div>
+            </div>
+            <div class="metric">
+                <div class="metric-value">SGD 79K</div>
+                <div class="metric-label">Revenue from Sales Initiative</div>
+            </div>
+            <div class="metric">
+                <div class="metric-value">6</div>
+                <div class="metric-label">SEA Markets Covered</div>
+            </div>
+            <div class="metric">
+                <div class="metric-value">5</div>
+                <div class="metric-label">Companies incl. FAANG</div>
+            </div>
+        </div>
+    </section>
+
+    <hr class="section-divider">
+
+    <!-- ====== CASE STUDIES ====== -->
+    <section id="work">
+        <div class="section-label">// 01 — Case Studies</div>
+        <h2 class="section-title">Selected Work</h2>
+        <p class="section-subtitle">Real projects demonstrating product thinking, user-centricity, and measurable impact.</p>
+
+        <div class="case-studies-grid">
+
+            <!-- CASE STUDY 1: Paid-to-CRM Personalization -->
+            <div class="case-card" onclick="document.getElementById('modal-1').style.display='flex'">
+                <div class="case-card-image" style="display:flex; gap:0; padding: 1.2rem 1.5rem; align-items:center; justify-content:center; background: linear-gradient(135deg, #0d1117, #161b22);">
+                    <img src="case-push-1.png" alt="Push notification - Recurring Buys" style="width:48%; height:auto; border-radius:10px; box-shadow: 0 4px 20px rgba(0,0,0,0.4);">
+                    <img src="case-push-2.png" alt="Push notification - Welcome Bonus" style="width:48%; height:auto; border-radius:10px; box-shadow: 0 4px 20px rgba(0,0,0,0.4);">
+                </div>
+                <div class="case-card-body">
+                    <div class="case-card-tags">
+                        <span class="tag">CRM</span>
+                        <span class="tag blue">Paid Ads</span>
+                        <span class="tag purple">Data</span>
+                    </div>
+                    <h3>Paid-to-CRM Personalized Push Strategy</h3>
+                    <p>Designed a cross-channel system to personalize CRM push notifications for non-KYC users based on the specific paid ad creative that acquired them — mirroring each ad's CTA and incentive.</p>
+                    <div class="case-card-result">↑ 35% KYC conversion uplift vs. control</div>
+                </div>
+            </div>
+
+            <!-- MODAL for Case Study 1 -->
+            <div id="modal-1" style="display:none; position:fixed; top:0; left:0; right:0; bottom:0; z-index:999; background:rgba(0,0,0,0.85); backdrop-filter:blur(8px); align-items:center; justify-content:center; padding:2rem;" onclick="if(event.target===this)this.style.display='none'">
+                <div style="background:var(--bg-card); border:1px solid var(--border); border-radius:16px; max-width:720px; width:100%; max-height:90vh; overflow-y:auto; padding:2.5rem;">
+                    <div style="display:flex; justify-content:space-between; align-items:start; margin-bottom:1.5rem;">
+                        <div class="case-card-tags">
+                            <span class="tag">CRM</span>
+                            <span class="tag blue">Paid Ads</span>
+                            <span class="tag purple">Data</span>
+                        </div>
+                        <span style="cursor:pointer; color:var(--text-muted); font-size:1.5rem; line-height:1;" onclick="document.getElementById('modal-1').style.display='none'">&times;</span>
+                    </div>
+                    <h3 style="font-size:1.5rem; font-weight:700; margin-bottom:0.75rem;">Paid-to-CRM Personalized Push Strategy</h3>
+                    <p style="color:var(--text-secondary); margin-bottom:1.5rem; line-height:1.7;">Designed and executed a cross-channel personalization initiative connecting paid acquisition data to CRM messaging — resulting in a <strong style="color:var(--accent);">35% uplift in KYC conversions</strong> versus the control group.</p>
+
+                    <div style="margin-bottom:1.5rem;">
+                        <h4 style="font-size:0.85rem; font-family:'JetBrains Mono',monospace; color:var(--accent); margin-bottom:0.5rem;">// PROBLEM</h4>
+                        <p style="color:var(--text-secondary); font-size:0.9rem; line-height:1.7;">Users acquired through paid ads on Google and Meta were receiving generic onboarding push notifications that didn't reflect the specific incentive or CTA they originally engaged with. This disconnect was contributing to low KYC completion rates among newly acquired users.</p>
+                    </div>
+
+                    <div style="margin-bottom:1.5rem;">
+                        <h4 style="font-size:0.85rem; font-family:'JetBrains Mono',monospace; color:var(--accent); margin-bottom:0.5rem;">// SOLUTION</h4>
+                        <p style="color:var(--text-secondary); font-size:0.9rem; line-height:1.7;">Built a personalized push notification system that dynamically matched CRM messaging to the specific paid ad creative that acquired each user. For example, users acquired via a "Welcome Bonus" ad received a push reinforcing that exact offer, while users from a "Recurring Buys" campaign saw messaging about zero-fee trading.</p>
+                    </div>
+
+                    <div style="display:flex; gap:1rem; margin-bottom:1.5rem; justify-content:center; background:var(--bg-secondary); border-radius:12px; padding:1.5rem;">
+                        <img src="case-push-1.png" alt="Push - Recurring Buys" style="width:45%; border-radius:8px; box-shadow: 0 4px 16px rgba(0,0,0,0.4);">
+                        <img src="case-push-2.png" alt="Push - Welcome Bonus" style="width:45%; border-radius:8px; box-shadow: 0 4px 16px rgba(0,0,0,0.4);">
+                    </div>
+
+                    <div style="margin-bottom:1.5rem;">
+                        <h4 style="font-size:0.85rem; font-family:'JetBrains Mono',monospace; color:var(--accent); margin-bottom:0.5rem;">// TECHNICAL EXECUTION</h4>
+                        <p style="color:var(--text-secondary); font-size:0.9rem; line-height:1.7;">Distilled user acquisition source data from the <strong style="color:var(--text-primary);">AppsFlyer</strong> integration and dynamically connected it with campaign creative data stored in <strong style="color:var(--text-primary);">Databricks</strong>. Mapped the enriched user segments to a table in <strong style="color:var(--text-primary);">Segment</strong> via Reverse ETL (RETL), then synced to <strong style="color:var(--text-primary);">Braze</strong> for targeted push notification delivery.</p>
+                    </div>
+
+                    <div style="background:var(--bg-secondary); border-radius:10px; padding:1.25rem; display:flex; gap:2rem; flex-wrap:wrap;">
+                        <div>
+                            <div style="font-size:1.6rem; font-weight:800; background:var(--gradient-1); -webkit-background-clip:text; -webkit-text-fill-color:transparent;">+35%</div>
+                            <div style="font-size:0.75rem; color:var(--text-secondary); text-transform:uppercase; letter-spacing:0.05em;">KYC Uplift vs. Control</div>
+                        </div>
+                        <div>
+                            <div style="font-size:1.6rem; font-weight:800; color:var(--text-primary);">4</div>
+                            <div style="font-size:0.75rem; color:var(--text-secondary); text-transform:uppercase; letter-spacing:0.05em;">Systems Integrated</div>
+                        </div>
+                        <div>
+                            <div style="font-size:1.6rem; font-weight:800; color:var(--text-primary);">Dynamic</div>
+                            <div style="font-size:0.75rem; color:var(--text-secondary); text-transform:uppercase; letter-spacing:0.05em;">Creative Matching</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CASE STUDY 2: Web3 Daily Summary — News API to CRM -->
+            <div class="case-card" onclick="document.getElementById('modal-2').style.display='flex'">
+                <div class="case-card-image" style="display:flex; align-items:center; justify-content:center; background: linear-gradient(135deg, #0b1120, #131a2e); padding: 1rem;">
+                    <img src="case-web3-summary.png" alt="Web3 Daily Summary push" style="height:180px; width:auto; border-radius:10px; box-shadow: 0 4px 20px rgba(0,0,0,0.5);">
+                </div>
+                <div class="case-card-body">
+                    <div class="case-card-tags">
+                        <span class="tag">CRM</span>
+                        <span class="tag blue">API</span>
+                        <span class="tag purple">NLP</span>
+                    </div>
+                    <h3>AI-Driven Web3 Daily News Digest</h3>
+                    <p>Built a dynamic CRM content pipeline that pulls from an internal news API with sentiment analysis to deliver personalized daily crypto news summaries to users.</p>
+                    <div class="case-card-result">Automated · Personalized · Sentiment-driven</div>
+                </div>
+            </div>
+
+            <!-- MODAL for Case Study 2 -->
+            <div id="modal-2" style="display:none; position:fixed; top:0; left:0; right:0; bottom:0; z-index:999; background:rgba(0,0,0,0.85); backdrop-filter:blur(8px); align-items:center; justify-content:center; padding:2rem;" onclick="if(event.target===this)this.style.display='none'">
+                <div style="background:var(--bg-card); border:1px solid var(--border); border-radius:16px; max-width:720px; width:100%; max-height:90vh; overflow-y:auto; padding:2.5rem;">
+                    <div style="display:flex; justify-content:space-between; align-items:start; margin-bottom:1.5rem;">
+                        <div class="case-card-tags">
+                            <span class="tag">CRM</span>
+                            <span class="tag blue">API</span>
+                            <span class="tag purple">NLP</span>
+                        </div>
+                        <span style="cursor:pointer; color:var(--text-muted); font-size:1.5rem; line-height:1;" onclick="document.getElementById('modal-2').style.display='none'">&times;</span>
+                    </div>
+                    <h3 style="font-size:1.5rem; font-weight:700; margin-bottom:0.75rem;">AI-Driven Web3 Daily News Digest</h3>
+                    <p style="color:var(--text-secondary); margin-bottom:1.5rem; line-height:1.7;">Designed and implemented an automated CRM content pipeline that delivers personalized daily crypto news summaries — powered by an internal news API and sentiment analysis.</p>
+
+                    <div style="margin-bottom:1.5rem;">
+                        <h4 style="font-size:0.85rem; font-family:'JetBrains Mono',monospace; color:var(--accent); margin-bottom:0.5rem;">// PROBLEM</h4>
+                        <p style="color:var(--text-secondary); font-size:0.9rem; line-height:1.7;">Crypto markets move fast — users want to stay informed but are overwhelmed by noise. Generic news roundups lack relevance, and manually curating daily content doesn't scale across a global user base.</p>
+                    </div>
+
+                    <div style="margin-bottom:1.5rem;">
+                        <h4 style="font-size:0.85rem; font-family:'JetBrains Mono',monospace; color:var(--accent); margin-bottom:0.5rem;">// SOLUTION</h4>
+                        <p style="color:var(--text-secondary); font-size:0.9rem; line-height:1.7;">Leveraged an internal news API that scrapes RSS feeds and categorises articles using <strong style="color:var(--text-primary);">sentiment analysis</strong> to surface the most relevant stories. For each CRM push, pulled the top news stories associated with a target cryptocurrency, then delivered them as a "Your Daily Web3 Summary" in-app card — giving users a curated, timely reason to engage.</p>
+                    </div>
+
+                    <div style="display:flex; margin-bottom:1.5rem; justify-content:center; background:var(--bg-secondary); border-radius:12px; padding:1.5rem;">
+                        <img src="case-web3-summary.png" alt="Web3 Daily Summary" style="height:260px; width:auto; border-radius:8px; box-shadow: 0 4px 16px rgba(0,0,0,0.4);">
+                    </div>
+
+                    <div style="margin-bottom:1.5rem;">
+                        <h4 style="font-size:0.85rem; font-family:'JetBrains Mono',monospace; color:var(--accent); margin-bottom:0.5rem;">// TECHNICAL EXECUTION</h4>
+                        <p style="color:var(--text-secondary); font-size:0.9rem; line-height:1.7;">The internal news API ingests articles from multiple RSS feeds and applies <strong style="color:var(--text-primary);">NLP-based sentiment classification</strong> to categorize stories by topic and sentiment. On the CRM side, built a dynamic content block in <strong style="color:var(--text-primary);">Braze</strong> that queries the API at send-time, pulling the top-ranked stories for the target coin and populating the push/in-app card with headlines, dates, and a trade CTA.</p>
+                    </div>
+
+                    <div style="background:var(--bg-secondary); border-radius:10px; padding:1.25rem; display:flex; gap:2rem; flex-wrap:wrap;">
+                        <div>
+                            <div style="font-size:1.6rem; font-weight:800; background:var(--gradient-1); -webkit-background-clip:text; -webkit-text-fill-color:transparent;">Automated</div>
+                            <div style="font-size:0.75rem; color:var(--text-secondary); text-transform:uppercase; letter-spacing:0.05em;">Daily Content Pipeline</div>
+                        </div>
+                        <div>
+                            <div style="font-size:1.6rem; font-weight:800; color:var(--text-primary);">NLP</div>
+                            <div style="font-size:0.75rem; color:var(--text-secondary); text-transform:uppercase; letter-spacing:0.05em;">Sentiment Analysis</div>
+                        </div>
+                        <div>
+                            <div style="font-size:1.6rem; font-weight:800; color:var(--text-primary);">Dynamic</div>
+                            <div style="font-size:0.75rem; color:var(--text-secondary); text-transform:uppercase; letter-spacing:0.05em;">Braze Content Blocks</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CASE STUDY 3 -->
+            <div class="case-card">
+                <div class="case-card-image">
+                    <div class="placeholder-icon">🧪</div>
+                </div>
+                <div class="case-card-body">
+                    <div class="case-card-tags">
+                        <span class="tag blue">Product</span>
+                        <span class="tag">A/B Testing</span>
+                    </div>
+                    <h3>Feature Launch GTM</h3>
+                    <p>Led go-to-market for a new product feature — coordinating cross-functional teams, running A/B tests, and driving adoption through targeted in-app messaging.</p>
+                    <div class="case-card-result">↑ 41% feature adoption in 30 days</div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <hr class="section-divider">
+
+    <!-- ====== SKILLS ====== -->
+    <section id="skills">
+        <div class="section-label">// 02 — Capabilities</div>
+        <h2 class="section-title">What I Bring</h2>
+        <p class="section-subtitle">Bridging the gap between marketing execution and product strategy.</p>
+
+        <div class="skills-grid">
+            <div class="skill-card">
+                <div class="skill-icon green">📈</div>
+                <h3>Growth &amp; Paid Acquisition</h3>
+                <p>Multi-channel paid strategy across Google, Meta, X, and TikTok. CAC optimization, attribution modeling, and scaling spend across APAC markets.</p>
+            </div>
+            <div class="skill-card">
+                <div class="skill-icon blue">🔄</div>
+                <h3>CRM &amp; Lifecycle</h3>
+                <p>End-to-end lifecycle orchestration using Braze. Segmentation, push/email/in-app campaigns, retention analysis, and personalization at scale.</p>
+            </div>
+            <div class="skill-card">
+                <div class="skill-icon purple">🧠</div>
+                <h3>MarTech &amp; Data Infrastructure</h3>
+                <p>Twilio Segment, Mixpanel, AppsFlyer, Databricks. Reverse ETL pipelines, JSON RPC APIs, and first-party data architecture for marketing automation.</p>
+            </div>
+            <div class="skill-card">
+                <div class="skill-icon green">📊</div>
+                <h3>Data &amp; Analytics</h3>
+                <p>Python and SQL for analysis and automation. Building dashboards, pulling insights from campaign data, and making data-driven decisions at speed.</p>
+            </div>
+            <div class="skill-card">
+                <div class="skill-icon blue">🚀</div>
+                <h3>Go-to-Market Strategy</h3>
+                <p>Product launches, positioning, sales enablement, and cross-functional coordination across marketing, product, and engineering teams.</p>
+            </div>
+            <div class="skill-card">
+                <div class="skill-icon purple">🌏</div>
+                <h3>APAC &amp; SEA Markets</h3>
+                <p>Hands-on experience across 6 South-East Asian markets at Grab and APAC-wide strategy at Google and Crypto.com. Understands regional nuance.</p>
+            </div>
+        </div>
+    </section>
+
+    <hr class="section-divider">
+
+    <!-- ====== EXPERIENCE ====== -->
+    <section id="experience">
+        <div class="section-label">// 03 — Experience</div>
+        <h2 class="section-title">Career Timeline</h2>
+        <p class="section-subtitle">My path from marketing execution to product-oriented strategy.</p>
+
+        <div class="timeline">
+            <div class="timeline-item">
+                <div class="timeline-date">Nov 2023 — Present</div>
+                <h3>Growth MarTech — CRM / Paid Marketing</h3>
+                <div class="timeline-company">Crypto.com</div>
+                <p>Own first-party data and advanced analytics driving 20%+ engagement and retention lift across paid and organic channels (Google, Meta, X, TikTok). Provide API development support using JSON RPC protocols for dynamic personalization and enterprise-scale data automation. Collaborate with engineering on technical troubleshooting to ensure high-speed data processing across marketing infrastructure.</p>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-date">Nov 2022 — Nov 2023</div>
+                <h3>Google Ads, Sales Strategy Apprentice — Mid-Market</h3>
+                <div class="timeline-company">Google</div>
+                <p>Identified high-impact opportunities and developed go-to-market strategies for high-value APAC clients. Built critical business insights using analytics to inform cross-functional strategy — specifically share-of-wallet sizing and revenue growth in the fashion retail vertical.</p>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-date">Jan — Jul 2022</div>
+                <h3>GrabAds, Regional Strategy Intern</h3>
+                <div class="timeline-company">Grab Holdings</div>
+                <p>Cross-collaborated with C-level stakeholders to deliver advertising solutions across 6 SEA markets. Led a sales enablement initiative in Indonesia generating SGD 79K in 3 weeks. Analysed campaign performance to optimise client acquisition and product adoption for SMB and commercial accounts.</p>
+            </div>
+        </div>
+    </section>
+
+    <hr class="section-divider">
+
+    <!-- ====== EDUCATION ====== -->
+    <section>
+        <div class="section-label">// 04 — Education</div>
+        <h2 class="section-title">Education</h2>
+        <div class="timeline">
+            <div class="timeline-item">
+                <div class="timeline-date">2018 — 2022</div>
+                <h3>Bachelor of Business Administration (Honours)</h3>
+                <div class="timeline-company">National University of Singapore</div>
+                <p>NUS Varsity Tennis — Team Manager. Meet Ventures Zero to One Entrepreneurship Program — Research Assistant.</p>
+            </div>
+        </div>
+    </section>
+
+    <hr class="section-divider">
+
+    <!-- ====== CONTACT ====== -->
+    <section id="contact" class="contact-section">
+        <div class="section-label">// 05 — Let's Connect</div>
+        <h2 class="section-title">Get in Touch</h2>
+        <p class="section-subtitle" style="margin: 0 auto 2rem;">
+            Open to PM and PMM roles — especially in fintech, crypto, and consumer tech.
         </p>
-        <div class="hero-cta">
-          <a href="#experience" class="btn btn-primary">View My Work</a>
-          <a href="mailto:lyenatasha@gmail.com" class="btn btn-ghost">Get in Touch</a>
+
+        <div class="contact-links">
+            <a href="mailto:lyenatasha@gmail.com" class="contact-link">✉️ Email</a>
+            <a href="https://linkedin.com/in/natasha-lye/" target="_blank" class="contact-link">💼 LinkedIn</a>
+            <a href="#" class="contact-link">📄 Resume (PDF)</a>
         </div>
-        <div class="hero-stats">
-          <div class="stat">
-            <div class="stat-num">3+</div>
-            <div class="stat-label">Years in Growth & Ads</div>
-          </div>
-          <div class="stat">
-            <div class="stat-num">6</div>
-            <div class="stat-label">SEA Markets</div>
-          </div>
-          <div class="stat">
-            <div class="stat-num">SGD 79K</div>
-            <div class="stat-label">Revenue in 3 Weeks</div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
+    </section>
 
-  <div class="divider"></div>
-
-  <!-- ABOUT -->
-  <section id="about">
-    <div class="container">
-      <div class="section-label">About Me</div>
-      <div class="section-title">Bridging strategy<br>& execution</div>
-      <div class="about-grid">
-        <div class="glass about-card wide">
-          <h3>My Story</h3>
-          <p>
-            I've spent the last 3+ years at the intersection of <strong>growth marketing, data analytics, and cross-functional execution</strong> — at Google, Crypto.com, and Grab. Now I'm channeling that experience toward Product Management, where I can shape the product decisions behind the campaigns I've been running.
-          </p>
-          <br/>
-          <p>
-            My edge: I've worked hands-on with <strong>engineering, data science, and product teams</strong> on platform integrations and attribution systems. I speak both the business and technical language fluently — which means I can write specs, prioritise ruthlessly, and build alignment across teams.
-          </p>
-        </div>
-        <div class="glass about-card">
-          <h3>What I Bring to PM</h3>
-          <p>
-            Deep fluency in <strong>user acquisition funnels</strong> and CRM lifecycle. I've translated revenue targets into campaign architecture, then iterated based on data — the same loop as product development, just one layer up.
-          </p>
-        </div>
-        <div class="glass about-card">
-          <h3>How I Work</h3>
-          <p>
-            Consultative by nature. I ask hard questions, surface hidden constraints, and build consensus before charging forward. I'm comfortable managing <strong>C-level stakeholders</strong> and engineering squads in the same week.
-          </p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <div class="divider"></div>
-
-  <!-- EXPERIENCE -->
-  <section id="experience">
-    <div class="container">
-      <div class="section-label">Work Experience</div>
-      <div class="section-title">Where I've<br>made an impact</div>
-      <div class="timeline">
-
-        <div class="timeline-item">
-          <div class="glass exp-card">
-            <div class="exp-header">
-              <span class="exp-title">Growth MarTech Associate – CRM & Paid Marketing</span>
-              <span class="exp-date">Nov 2023 – Present</span>
-            </div>
-            <div class="exp-company">Crypto.com · Singapore</div>
-            <ul class="exp-bullets">
-              <li>Managed and optimised multi-channel paid campaigns across <strong>Google, Meta, TikTok, and X</strong> using first-party data and performance insights to drive measurable uplift in user acquisition</li>
-              <li>Translated business objectives into actionable media strategies for internal stakeholders — mirroring consultative account management at scale</li>
-              <li>Used investigative data analysis to uncover audience insights and campaign optimisation opportunities, directly improving <strong>campaign ROI and scalability</strong></li>
-              <li>Collaborated with <strong>engineering, data science, and product teams</strong> on platform integrations and performance tracking — ensuring accurate attribution and smarter campaign decisions</li>
-            </ul>
-          </div>
-        </div>
-
-        <div class="timeline-item">
-          <div class="glass exp-card">
-            <div class="exp-header">
-              <span class="exp-title">Google Ads, Sales Strategy – Mid-Market Sales</span>
-              <span class="exp-date">Nov 2022 – Nov 2023</span>
-            </div>
-            <div class="exp-company">Google · Singapore</div>
-            <ul class="exp-bullets">
-              <li>Managed a portfolio of high-value <strong>mid-market clients across APAC</strong>, developing tailored go-to-market strategies to maximise Google Ads ROI</li>
-              <li>Conducted regular business reviews and strategic consultations, advising on campaign structure, bidding strategy, and product adoption</li>
-              <li>Leveraged advanced analytics to establish <strong>share-of-wallet sizing and revenue benchmarks</strong> in the fashion retail vertical, informing cross-functional strategy</li>
-              <li>Consistently delivered against quarterly growth and product adoption targets by identifying incremental revenue opportunities</li>
-            </ul>
-          </div>
-        </div>
-
-        <div class="timeline-item">
-          <div class="glass exp-card">
-            <div class="exp-header">
-              <span class="exp-title">GrabAds – Regional Strategy Intern</span>
-              <span class="exp-date">Jan 2022 – Jul 2022</span>
-            </div>
-            <div class="exp-company">Grab Holdings Inc. · Singapore</div>
-            <ul class="exp-bullets">
-              <li>Drove client acquisition and product adoption for SMB accounts across <strong>6 Southeast Asian markets</strong> using performance data to inform sales pitches</li>
-              <li>Spearheaded a sales enablement initiative in Indonesia that generated <strong>SGD 79K in revenue within three weeks</strong></li>
-              <li>Managed strategic partnerships with C-level stakeholders to develop and execute advertising solutions</li>
-            </ul>
-          </div>
-        </div>
-
-        <div class="timeline-item">
-          <div class="glass exp-card">
-            <div class="exp-header">
-              <span class="exp-title">Partnerships & Strategic Projects Intern</span>
-              <span class="exp-date">May 2021 – Aug 2021</span>
-            </div>
-            <div class="exp-company">Grab Holdings Inc. · Singapore</div>
-            <ul class="exp-bullets">
-              <li>Led market analysis and insight generation to identify and secure potential brand partners for strategic joint ventures</li>
-              <li>Generated <strong>SGD 100K GMV</strong> for GrabTransport and pioneered merchant acquisition for the GrabGroupBuy pilot launch</li>
-            </ul>
-          </div>
-        </div>
-
-      </div>
-    </div>
-  </section>
-
-  <div class="divider"></div>
-
-  <!-- SKILLS -->
-  <section id="skills">
-    <div class="container">
-      <div class="section-label">Technical Skills</div>
-      <div class="section-title">Tools & expertise</div>
-      <div class="skills-grid">
-        <div class="glass skill-card"><div class="skill-icon">📊</div><span class="skill-name">Google Ads</span></div>
-        <div class="glass skill-card"><div class="skill-icon">📈</div><span class="skill-name">Google Analytics</span></div>
-        <div class="glass skill-card"><div class="skill-icon">🏷️</div><span class="skill-name">Google Tag Manager</span></div>
-        <div class="glass skill-card"><div class="skill-icon">📱</div><span class="skill-name">Meta Ads Manager</span></div>
-        <div class="glass skill-card"><div class="skill-icon">🎵</div><span class="skill-name">TikTok Ads</span></div>
-        <div class="glass skill-card"><div class="skill-icon">🐍</div><span class="skill-name">Python</span></div>
-        <div class="glass skill-card"><div class="skill-icon">🗄️</div><span class="skill-name">SQL</span></div>
-        <div class="glass skill-card"><div class="skill-icon">⚙️</div><span class="skill-name">CRM Automation</span></div>
-        <div class="glass skill-card"><div class="skill-icon">📉</div><span class="skill-name">Performance Dashboards</span></div>
-        <div class="glass skill-card"><div class="skill-icon">🔗</div><span class="skill-name">Data Attribution</span></div>
-      </div>
-    </div>
-  </section>
-
-  <div class="divider"></div>
-
-  <!-- EDUCATION -->
-  <section id="education">
-    <div class="container">
-      <div class="section-label">Education</div>
-      <div class="section-title">Academic foundation</div>
-      <div class="edu-grid">
-        <div class="glass edu-card">
-          <div class="edu-degree">Bachelor of Business Administration (Honours)</div>
-          <div class="edu-school">National University of Singapore</div>
-          <div class="edu-year">Graduated 2022 · Singapore</div>
-          <ul class="edu-bullets">
-            <li>Research Assistant – Meet Ventures Zero to One Entrepreneurship Program</li>
-          </ul>
-        </div>
-        <div class="glass edu-card">
-          <div class="edu-degree">Higher School Certificate · ATAR 92.75</div>
-          <div class="edu-school">The McDonald College</div>
-          <div class="edu-year">Sydney, Australia</div>
-          <ul class="edu-bullets">
-            <li>High Distinction – Australian Business Studies Competition (2016 & 2017)</li>
-            <li>Top in Course – Year 12 Mathematics</li>
-          </ul>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <div class="divider"></div>
-
-  <!-- CONTACT -->
-  <section id="contact">
-    <div class="container">
-      <div class="contact-inner">
-        <div class="glass contact-card">
-          <div class="section-label" style="text-align:center;">Get In Touch</div>
-          <div class="section-title">Let's work<br>together</div>
-          <p class="contact-desc">
-            I'm actively exploring Product Manager roles where I can apply my experience in growth marketing and cross-functional execution. Open to conversations about PM, growth, and strategy positions.
-          </p>
-          <div class="contact-links">
-            <a href="mailto:lyenatasha@gmail.com" class="btn btn-primary">lyenatasha@gmail.com</a>
-            <a href="https://linkedin.com/in/natasha-lye/" target="_blank" rel="noopener" class="btn btn-ghost">LinkedIn</a>
-            <a href="https://lyen99.github.io/natashalye" target="_blank" rel="noopener" class="btn btn-ghost">Portfolio</a>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <footer>
-    <div class="container">
-      <p>© 2026 Natasha Lye · Built with purpose</p>
-    </div>
-  </footer>
+    <!-- ====== FOOTER ====== -->
+    <footer>
+        Built by Natasha Lye · 2026
+    </footer>
 
 </body>
 </html>
